@@ -28,10 +28,15 @@ public class Teacher : MonoBehaviour
 		FindTarget ();
 
 		//find the distance to the player, if close neough, grab them and send them, to detention
-		float distance = Vector3.Distance (this.transform.position, target.transform.position);
-		if (distance <= reach)
+		float distance = 0f;
+		if(target != null)
 		{
-			GrabPlayer();
+			distance = Vector3.Distance (this.transform.position, target.transform.position);
+
+			if (distance <= reach)
+			{
+				GrabPlayer();
+			}
 		}
 	}
 
