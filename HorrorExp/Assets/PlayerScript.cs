@@ -7,13 +7,16 @@ public class PlayerScript : MonoBehaviour
 	public float moveSpeed = 5;
 	public GameObject cam;
 
+	public bool playerDisabled = false;
+
+	//flahslight variables
 	public GameObject flashLight;
 	Light light;
 	bool lightOn = false;
-
+	float intensity;
 	public float battLife = 100.0f;
 
-	float intensity;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -43,50 +46,40 @@ public class PlayerScript : MonoBehaviour
 		if(battLife<30)
 		battLife += Time.deltaTime;
 
-		// Movement
-		transform.rotation = Quaternion.Euler(new Vector3(0,cam.transform.rotation.eulerAngles.y,0));
-		Vector3 move = Vector3.zero;
-		if (Input.GetKey (KeyCode.W))
+		if (!playerDisabled) 
 		{
-			move += transform.forward;
-		}
-		if (Input.GetKey (KeyCode.A))
-		{
-			move -= transform.right;
-		}
-		if (Input.GetKey (KeyCode.S))
-		{
-			move -= transform.forward;
-		}
-		if (Input.GetKey (KeyCode.D))
-		{
-			move += transform.right;
-		}
-		if (move != Vector3.zero)
-		{
-			if(Input.GetKey(KeyCode.LeftShift))
-			{
-				rb.transform.position += move * moveSpeed * 1.5f * Time.deltaTime;
+			// Movement
+			transform.rotation = Quaternion.Euler (new Vector3 (0, cam.transform.rotation.eulerAngles.y, 0));
+			Vector3 move = Vector3.zero;
+			if (Input.GetKey (KeyCode.W)) {
+				move += transform.forward;
 			}
-			else
-			{
-				rb.transform.position += move * moveSpeed * Time.deltaTime;
+			if (Input.GetKey (KeyCode.A)) {
+				move -= transform.right;
 			}
-		}
+			if (Input.GetKey (KeyCode.S)) {
+				move -= transform.forward;
+			}
+			if (Input.GetKey (KeyCode.D)) {
+				move += transform.right;
+			}
+			if (move != Vector3.zero) {
+				if (Input.GetKey (KeyCode.LeftShift)) {
+					rb.transform.position += move * moveSpeed * 1.5f * Time.deltaTime;
+				} else {
+					rb.transform.position += move * moveSpeed * Time.deltaTime;
+				}
+			}
 
-
-
-		// FlashLight
-		if (Input.GetKeyDown (KeyCode.F)) 
-		{
-			lightOn = !lightOn;
+			// FlashLight
+			if (Input.GetKeyDown (KeyCode.F)) {
+				lightOn = !lightOn;
+			}
+			if (lightOn) {
+				light.enabled = true;
+			} else
+				light.enabled = false;
 		}
-		if (lightOn) 
-		{
-			light.enabled = true;
-		}
-		else
-			light.enabled = false;
 	}
 
 	IEnumerator Flicker()

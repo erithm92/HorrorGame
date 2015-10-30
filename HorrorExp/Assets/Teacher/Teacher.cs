@@ -59,10 +59,21 @@ public class Teacher : MonoBehaviour
 		//play grabAudio on players AudioSource
 
 		//send player to detention
-		//disable player interaction
+		target.GetComponent<PlayerScript> ().playerDisabled = true;
+
+		//fade out to black
+
+		//move player to detention
 		target.transform.position = detention.transform.position;
 		target.transform.rotation = detention.transform.rotation;
+
+		//fade in to black
+
 		//reenable player interaction
+		target.GetComponent<PlayerScript> ().playerDisabled = false;
+
+		target = null;
+		hallRange.inHall = null;
 	}
 	
 
