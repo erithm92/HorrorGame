@@ -6,9 +6,10 @@ public class PlayerScript : MonoBehaviour
 	Rigidbody rb;
 	public float moveSpeed = 5;
 	public GameObject cam;
+
 	public GameObject flashLight;
 	Light light;
-	bool on = false;
+	bool lightOn = false;
 
 	public float battLife = 100.0f;
 
@@ -25,6 +26,7 @@ public class PlayerScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		// Battery Life
 		if (light.enabled) 
 		{
 			battLife -= Time.deltaTime * 2f;
@@ -36,11 +38,12 @@ public class PlayerScript : MonoBehaviour
 		}
 		if (battLife <= 0) 
 		{
-			on = false;
+			lightOn = false;
 		}
 		if(battLife<30)
 		battLife += Time.deltaTime;
 
+		// Movement
 		transform.rotation = Quaternion.Euler(new Vector3(0,cam.transform.rotation.eulerAngles.y,0));
 		Vector3 move = Vector3.zero;
 		if (Input.GetKey (KeyCode.W))
@@ -60,18 +63,32 @@ public class PlayerScript : MonoBehaviour
 			move += transform.right;
 		}
 		if (move != Vector3.zero)
-			rb.transform.position += move *moveSpeed * Time.deltaTime;
+		{
+			if(Input.GetKey(KeyCode.LeftShift))
+			{
+				rb.transform.position += move * moveSpeed * 1.5f * Time.deltaTime;
+			}
+			else
+			{
+				rb.transform.position += move * moveSpeed * Time.deltaTime;
+			}
+		}
+
+
+
+		// FlashLight
 		if (Input.GetKeyDown (KeyCode.F)) 
 		{
-			on = !on;
+			lightOn = !lightOn;
 		}
-		if (on) 
+		if (lightOn) 
 		{
 			light.enabled = true;
 		}
 		else
 			light.enabled = false;
 	}
+
 	IEnumerator Flicker()
 	{
 		while (light.intensity > 0) 
