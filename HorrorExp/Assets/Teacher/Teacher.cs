@@ -18,7 +18,7 @@ public class Teacher : MonoBehaviour
 	{
 		navAgent = gameObject.GetComponent<NavMeshAgent> ();
 
-		hallRange = hallway.GetComponentInChildren<Hallway> ();
+		hallRange = hallway.GetComponent<Hallway> ();
 	}
 	
 	void Update ()
