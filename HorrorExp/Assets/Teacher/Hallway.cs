@@ -35,6 +35,7 @@ public class Hallway : MonoBehaviour
 
 				spawnLocation = teacherSpawnLocations[Random.Range(0, randomMax)];
 
+				teacher.SetActive(true);
 				teacher.transform.position = spawnLocation.transform.position;
 			}
 		}

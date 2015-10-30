@@ -6,8 +6,7 @@ public class Teacher : MonoBehaviour
 	public NavMeshAgent navAgent;
 	public GameObject hallway;
 	Hallway hallRange;
-
-	public GameObject[] spawnPositions = new GameObject[0];
+	
 	public GameObject detention;
 
 	public float reach = 3f;
@@ -17,7 +16,7 @@ public class Teacher : MonoBehaviour
 
 	void Start () 
 	{
-		navAgent = this.GetComponent<NavMeshAgent> ();
+		navAgent = gameObject.GetComponent<NavMeshAgent> ();
 
 		hallRange = hallway.GetComponentInChildren<Hallway> ();
 	}
@@ -31,7 +30,7 @@ public class Teacher : MonoBehaviour
 		float distance = 0f;
 		if(target != null)
 		{
-			distance = Vector3.Distance (this.transform.position, target.transform.position);
+			distance = Vector3.Distance (gameObject.transform.position, target.transform.position);
 
 			if (distance <= reach)
 			{
@@ -44,12 +43,19 @@ public class Teacher : MonoBehaviour
 	{
 		if (hallRange.inHall != null)
 		{
+			if(target == null)
+				hallRange.teacherActive = true;
+
 			target = hallRange.inHall;
 			navAgent.destination = target.transform.position;
 		}
 		else
 		{
-			navAgent.destination = this.transform.position;
+			target = null;
+			navAgent.destination = gameObject.transform.position;
+			//fade away
+			hallRange.teacherActive = false;
+			gameObject.SetActive(false);
 		}
 	}
 
